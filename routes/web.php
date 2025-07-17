@@ -15,8 +15,8 @@ Route::get('/register', Register::class)->name('register');
 Route::middleware('auth')->group(function () {
     Route::get('/products', ProductIndex::class)->name('products.index');
     Route::get('/products/create', Create::class)->name('products.create');
-    Route::get('/products/{product}', ProductView::class)->name('products.view');
-    Route::get('/products/{product}/edit', Edit::class)->name('products.edit');
+    Route::get('/products/{id}', ProductView::class)->name('products.view');
+    Route::get('/products/{id}/edit', Edit::class)->name('products.edit');
 });
 
 Route::get('/', function () {

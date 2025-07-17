@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Livewire\Auth;
 
 use Livewire\Component;
@@ -12,6 +11,7 @@ class Logout extends Component
         Auth::logout();
         session()->invalidate();
         session()->regenerateToken();
+
         return redirect()->route('login');
     }
 

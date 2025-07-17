@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Livewire\Auth;
 
 use Livewire\Component;
@@ -7,16 +6,24 @@ use Illuminate\Support\Facades\Auth;
 
 class Login extends Component
 {
-    public $email, $password;
+    public string $email = '';
+    public string $password = '';
+    public bool $remember = false;
+    public string $error = '';
 
     public function login()
     {
-        if (Auth::attempt(['email' => $this->email, 'password' => $this->password])) {
+        $this->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
             session()->regenerate();
             return redirect()->route('products.index');
         }
 
-        $this->addError('email', 'Invalid credentials.');
+        $this->error = 'Invalid credentials.';
     }
 
     public function render()

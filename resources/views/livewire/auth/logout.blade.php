@@ -1,3 +1,3 @@
-<div>
-    <button wire:click="logout">Logout</button>
-</div>
+<form wire:submit.prevent="logout">
+    <button type="submit" class="btn btn-outline-danger btn-sm">Logout</button>
+</form>

@@ -3,25 +3,32 @@
 namespace App\Livewire\Products;
 
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use App\Models\Product;
+use App\Http\Requests\StoreProductRequest;
+use Illuminate\Support\Facades\Validator;
 
 class Create extends Component
 {
-    public $name, $description, $price;
+    use WithFileUploads;
+
+    public $code, $name, $quantity, $price, $description, $imgurl;
 
     public function save()
     {
-        $this->validate([
-            'name' => 'required',
-            'price' => 'required|numeric',
-        ]);
+        $validated = Validator::make(
+            $this->all(),
+            (new StoreProductRequest())->rules()
+        )->validate();
 
-        Product::create([
-            'name' => $this->name,
-            'description' => $this->description,
-            'price' => $this->price,
-        ]);
+        // $validated['imgurl'] = $this->imgurl?->store('images', 'public');
+        $path = $this->imgurl->store('products', 'public');
+        $validated['imgurl'] = 'products/' . basename($path);
 
+
+        Product::create($validated);
+
+        session()->flash('message', 'Product created!');
         return redirect()->route('products.index');
     }
 
@@ -30,4 +37,3 @@ class Create extends Component
         return view('livewire.products.create');
     }
 }
-
