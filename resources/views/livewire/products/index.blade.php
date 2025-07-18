@@ -47,7 +47,16 @@
                     @endforelse
                 </tbody>
             </table>
-            {{ $products->links() }}
+            @if ($products->hasPages())
+                {{ $products->links() }}
+            @else
+                <nav>
+                    <ul class="pagination">
+                        <li class="page-item disabled"><span class="page-link">1</span></li>
+                    </ul>
+                </nav>
+            @endif
+
         </div>
     </div>
 </div>
